@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ChatService} from '../chat.service';
+import {ChatService, Message} from '../chat.service';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {scan} from "rxjs/operators";
 
 @Component({
   selector: 'chat-dialog',
@@ -8,10 +10,21 @@ import {ChatService} from '../chat.service';
 })
 export class ChatDialogComponent implements OnInit {
 
-  constructor(private chat: ChatService) { }
+  messages: Observable<Message[]>;
+  formValue: string;
+  // public conversation = new BehaviorSubject(Object([]));
+
+  // constructor(private chat: ChatService) { }
+  constructor(private chat: ChatService) {}
 
   ngOnInit() {
-    this.chat.talk();
+    // this.chat.talk();
+    // this.messages = this.chat.conversation.asObservable().pipe((acc, val) => acc + val);
+    // this.messages = this.chat.conversation.asObservable().scan((acc,val)=>acc.concat(val));
+    this.messages = this.chat.conversation.asObservable()
+      .pipe(
+        scan((acc, val) => acc.concat(val))
+      );
   }
 
 }
