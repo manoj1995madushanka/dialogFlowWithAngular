@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ChatService, Message} from '../chat.service';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {scan} from "rxjs/operators";
+import {scan} from 'rxjs/operators';
 
 @Component({
   selector: 'chat-dialog',
@@ -25,6 +25,11 @@ export class ChatDialogComponent implements OnInit {
       .pipe(
         scan((acc, val) => acc.concat(val))
       );
+  }
+
+  sendMessage() {
+    this.chat.converse(this.formValue);
+    this.formValue = '';
   }
 
 }
